@@ -1,6 +1,6 @@
 package com.core.domain;
 
-import lombok.AllArgsConstructor;
+import com.core.domain.enums.Languages;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,6 +48,6 @@ public class UserProfileEntity {
     @Column(name= "USERP_USER")
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_ID", nullable = false, updatable = false)
-    private User user;
+    private UserEntity user;
 
 }

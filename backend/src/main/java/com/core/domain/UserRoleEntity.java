@@ -1,5 +1,6 @@
 package com.core.domain;
 
+import com.core.domain.enums.UserRoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
