@@ -12,9 +12,9 @@ import java.util.Set;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "USER")
+@NoArgsConstructor
 public class User {
     @Id
     @Column(name = "USER_ID")
@@ -32,6 +32,8 @@ public class User {
     @Column(name = "USER_ENABLED", nullable = false)
     private Boolean isEnabled;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinTable(name = "USER_ROLES_MAPPING", joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ROLE_ID"))
     private Set<UserRoleEntity> userRoles;
 }
