@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -35,4 +36,13 @@ public abstract class AbstractAdvert {
     @Temporal(TemporalType.DATE )
     private Date publishDate;
 
+    @PrePersist
+    protected void onCreate() {
+        publishDate = Calendar.getInstance().getTime();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        publishDate = Calendar.getInstance().getTime();
+    }
 }
