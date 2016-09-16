@@ -16,7 +16,7 @@ import javax.persistence.AttributeOverride;
 
 
 /**
- * Created by Oleksandr_Samosonok on 5/20/2016.
+ * Created by Oleksandr on 5/20/2016.
  */
 @Getter
 @Setter

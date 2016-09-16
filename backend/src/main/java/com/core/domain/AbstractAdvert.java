@@ -1,16 +1,23 @@
 package com.core.domain;
 
-import com.core.domain.enums.AdvertTypeEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by Oleksandr_Samosonok on 5/10/2016.
+ * Created by Oleksandr on 5/10/2016.
  */
 @Getter
 @Setter
@@ -24,9 +31,8 @@ public abstract class AbstractAdvert {
     @Column(name = "ADVERT_TEXT", nullable = false)
     private String text;
 
-    @Column(name= "ADVERT_AUTHOR")
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "AUTHOR_ID", nullable = false)
     private UserProfileEntity author;
 
     @Column(name = "IS_ADVERT_ACTIVE", nullable = false)

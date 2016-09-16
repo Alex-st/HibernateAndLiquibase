@@ -12,7 +12,7 @@ import javax.persistence.Enumerated;
 import java.util.Date;
 
 /**
- * Created by Oleksandr_Samosonok on 7/21/2016.
+ * Created by Oleksandr on 7/21/2016.
  */
 @Getter
 @Setter

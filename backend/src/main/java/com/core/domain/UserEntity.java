@@ -8,12 +8,12 @@ import javax.persistence.*;
 import java.util.Set;
 
 /**
- * Created by Oleksandr_Samosonok on 5/5/2016.
+ * Created by Oleksandr on 5/5/2016.
  */
 @Getter
 @Setter
 @Entity
-@Table(name = "USER")
+@Table(name = "T_USER")
 @NoArgsConstructor
 public class UserEntity {
     @Id

@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by Oleksandr_Samosonok on 4/20/2016.
+ * Created by Oleksandr on 4/20/2016.
  */
 @Getter
 @Setter
@@ -45,7 +45,6 @@ public class UserProfileEntity {
     @Enumerated(EnumType.STRING)
     private Languages language;
 
-    @Column(name= "USERP_USER")
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_ID", nullable = false, updatable = false)
     private UserEntity user;
