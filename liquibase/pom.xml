@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>InnerProject</artifactId>
+        <groupId>InnerProject</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>liquibase</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.1</version>
+    <name>Liquibase Example</name>
+
+    <properties>
+        <lqb.changeLogFile>liquibase/db.changelog-master.xml</lqb.changeLogFile>
+        <lqb.jdbcDriver>org.h2.Driver</lqb.jdbcDriver>
+        <lqb.dbUrl>jdbc:h2:~/h2-db/schema1;MODE=Oracle;AUTO_SERVER=TRUE</lqb.dbUrl>
+        <lqb.dbUsername>admin</lqb.dbUsername>
+        <lqb.dbPassword>admin</lqb.dbPassword>
+        <lqb.prompt>true</lqb.prompt>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.191</version>
+        </dependency>
+        <!--Oracle driver is absent in central mvn repository, personal should be used-->
+        <!--<dependency>-->
+            <!--<groupId>com.oracle</groupId>-->
+            <!--<artifactId>jdbc</artifactId>-->
+            <!--<version>12.1.0.2</version>-->
+        <!--</dependency>-->
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <changeLogFile>${lqb.changeLogFile}</changeLogFile>
+                    <driver>${lqb.jdbcDriver}</driver>
+                    <url>${lqb.dbUrl}</url>
+                    <username>${lqb.dbUsername}</username>
+                    <password>${lqb.dbPassword}</password>
+                    <promptOnNonLocalDatabase>${lqb.prompt}</promptOnNonLocalDatabase>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--Additional repositories list-->
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>Nexus</id>-->
+            <!--<name>Internal Releases</name>-->
+            <!--<url>http://nexus.myServer.com/content/repositories/thirdparty</url>-->
+        <!--</repository>-->
+    <!--</repositories>-->
+
+</project>

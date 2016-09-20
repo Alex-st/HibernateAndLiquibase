@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,6 +28,7 @@ import java.util.Date;
 public abstract class AbstractAdvert {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DEFAULT_ADVERT_GEN")
     private Long id;
 
     @Column(name = "ADVERT_TEXT", nullable = false)

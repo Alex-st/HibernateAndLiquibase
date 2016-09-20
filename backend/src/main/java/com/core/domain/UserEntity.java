@@ -18,9 +18,8 @@ import java.util.Set;
 public class UserEntity {
     @Id
     @Column(name = "USER_ID")
-    @GeneratedValue
-//    @GeneratedValue(generator = "T_USR_GEN")
-//    @SequenceGenerator(name = "T_USR_GEN", sequenceName = "T_USR_SEQ", allocationSize = 20)
+    @GeneratedValue(generator = "USR_GEN")
+    @SequenceGenerator(name = "USR_GEN", sequenceName = "t_user_SEQ", allocationSize = 20)
     private Long id;
 
     @Column(name = "USER_LOGIN", unique=true, nullable = false)

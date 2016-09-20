@@ -10,7 +10,10 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>Backend</artifactId>
+    <artifactId>backend</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.1</version>
+    <name>Pure Hibernate Example</name>
 
     <properties>
         <lombok.version>1.14.8</lombok.version>

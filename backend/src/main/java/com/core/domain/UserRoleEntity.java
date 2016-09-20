@@ -19,9 +19,8 @@ public class UserRoleEntity {
 
     @Id
     @Column(name = "USER_ROLE_ID")
-    @GeneratedValue
-//    @GeneratedValue(generator = "T_USR_GEN")
-//    @SequenceGenerator(name = "T_USR_GEN", sequenceName = "T_USR_SEQ", allocationSize = 20)
+    @GeneratedValue(generator = "USR_ROLE_GEN")
+    @SequenceGenerator(name = "USR_ROLE_GEN", sequenceName = "user_role_SEQ", allocationSize = 20)
     private Long id;
 
     @Column(name = "USER_ROLE_NAME")

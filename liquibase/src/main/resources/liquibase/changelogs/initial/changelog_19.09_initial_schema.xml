@@ -1,0 +1,78 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+                   logicalFilePath="changelog_19.09_initial_schema.xml">
+
+    <changeSet id="001_schema" author="st_sanya@i.ua" dbms="oracle">
+        <sql stripComments="true" splitStatements="true">
+            <![CDATA[
+
+            CREATE UNIQUE INDEX USER_UNIQUE_LOGIN ON user_profile (userp_login ASC);
+
+            CREATE SEQUENCE "car_advert_SEQ" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "t_user_SEQ" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "user_profile_SEQ" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "user_role_SEQ" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "user_roles_mapping" INCREMENT BY 1 START WITH 1;
+
+            CREATE TABLE t_user
+            (
+              user_id INTEGER PRIMARY KEY,
+              user_enabled boolean NOT NULL,
+              user_login VARCHAR(50) NOT NULL,
+              user_pass VARCHAR(50) NOT NULL,
+              CONSTRAINT T_USER_UC UNIQUE (user_login)
+            )
+
+            CREATE TABLE user_profile
+            (
+              userp_id INTEGER PRIMARY KEY,
+              userp_birthday TIMESTAMP,
+              userp_email VARCHAR(50) NOT NULL,
+              userp_language VARCHAR(40),
+              userp_login VARCHAR(50) NOT NULL,
+              userp_name VARCHAR(50) NOT NULL,
+              userp_surname VARCHAR(50),
+              user_id INTEGER NOT NULL,
+              CONSTRAINT fk_user_pr_user FOREIGN KEY (user_id) REFERENCES t_user(user_id)
+              CONSTRAINT T_USER_PF_UE_UC UNIQUE (userp_email),
+              CONSTRAINT T_USER_PF_UI_UC UNIQUE (user_id),
+              CONSTRAINT T_USER_PF_UL_UC UNIQUE (userp_login)
+            )
+
+            CREATE TABLE car_advert
+            (
+              id INTEGER PRIMARY KEY,
+              is_advert_active boolean NOT NULL,
+              advert_publish_date TIMESTAMP,
+              advert_text VARCHAR(400) NOT NULL,
+              advert_type VARCHAR(50) NOT NULL,
+              car_model VARCHAR(50),
+              car_type VARCHAR(50),
+              car_engine_volume double precision,
+              car_production_year TIMESTAMP,
+              author_id INTEGER NOT NULL,
+              CONSTRAINT fk_author_user FOREIGN KEY (author_id) REFERENCES user_profile(userp_id),
+              CONSTRAINT check_car_type CHECK (upper(car_type) in ('SEDAN', 'TRACK', 'MINIWAN', MOTO))
+            )
+
+            CREATE TABLE user_role
+            (
+              user_role_id INTEGER PRIMARY KEY,
+              user_role_name VARCHAR(50),
+            )
+
+            CREATE TABLE user_roles_mapping
+            (
+              user_id INTEGER NOT NULL,
+              user_role_id INTEGER NOT NULL,
+              CONSTRAINT user_roles_mapping_pkey PRIMARY KEY (user_id, user_role_id),
+              CONSTRAINT fk_user_user_id FOREIGN KEY (user_id) REFERENCES t_user(user_id),
+              CONSTRAINT fk_user_user_id FOREIGN KEY (user_role_id) REFERENCES user_role(user_role_id),
+              CONSTRAINT T_USER_ROLE_UC UNIQUE (user_role_id)
+            )
+
+            ]]>
+        </sql>
+    </changeSet>
+    
+</databaseChangeLog>

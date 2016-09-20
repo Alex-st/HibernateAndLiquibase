@@ -20,9 +20,8 @@ public class UserProfileEntity {
 
     @Id
     @Column(name = "USERP_ID")
-    @GeneratedValue
-//    @GeneratedValue(generator = "T_USR_GEN")
-//    @SequenceGenerator(name = "T_USR_GEN", sequenceName = "T_USR_SEQ", allocationSize = 20)
+    @GeneratedValue(generator = "USRP_GEN")
+    @SequenceGenerator(name = "USRP_GEN", sequenceName = "user_profile_SEQ", allocationSize = 20)
     private Long id;
 
     @Column(name = "USERP_NAME", nullable = false)

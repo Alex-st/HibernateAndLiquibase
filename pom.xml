@@ -12,6 +12,7 @@
 
     <modules>
         <module>backend</module>
+        <module>liquibase</module>
     </modules>
 
     <properties>
