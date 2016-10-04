@@ -1,0 +1,25 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+                   logicalFilePath="changelog_30.09_create_stored_procedure.xml">
+
+    <changeSet id="create_delete_old_adverts_procedure" author="alex" dbms="oracle">
+        <sql stripComments="true" splitStatements="true">
+            <![CDATA[
+
+            CREATE OR REPLACE PROCEDURE deactivate_old_adverts(
+                    limitDate     IN      TIMESTAMP,
+                    result     OUT    NUMBER)
+            IS
+            BEGIN
+                   UPDATE CAR_ADVERT
+                   SET IS_ADVERT_ACTIVE = 0
+                   WHERE ADVERT_PUBLISH_DATE < limitDate;
+
+                   result := sql%rowcount;
+            END;
+
+            ]]>
+        </sql>
+    </changeSet>
+    
+</databaseChangeLog>

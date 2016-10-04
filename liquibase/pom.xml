@@ -41,7 +41,7 @@
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.1</version>
                 <configuration>
                     <changeLogFile>${lqb.changeLogFile}</changeLogFile>
                     <driver>${lqb.jdbcDriver}</driver>

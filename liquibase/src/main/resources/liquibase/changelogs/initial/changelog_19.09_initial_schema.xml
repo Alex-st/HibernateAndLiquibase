@@ -2,17 +2,15 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
                    logicalFilePath="changelog_19.09_initial_schema.xml">
 
-    <changeSet id="001_schema" author="st_sanya@i.ua" dbms="oracle">
+    <changeSet id="001_schema_postgres" author="alex" dbms="postgres">
         <sql stripComments="true" splitStatements="true">
             <![CDATA[
 
-            CREATE UNIQUE INDEX USER_UNIQUE_LOGIN ON user_profile (userp_login ASC);
-
-            CREATE SEQUENCE "car_advert_SEQ" INCREMENT BY 1 START WITH 1;
-            CREATE SEQUENCE "t_user_SEQ" INCREMENT BY 1 START WITH 1;
-            CREATE SEQUENCE "user_profile_SEQ" INCREMENT BY 1 START WITH 1;
-            CREATE SEQUENCE "user_role_SEQ" INCREMENT BY 1 START WITH 1;
-            CREATE SEQUENCE "user_roles_mapping" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "CAR_ADVERT_SEQ" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "T_USER_SEQ" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "USER_PROFILE_SEQ" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "USER_ROLE_SEQ" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "USER_ROLES_MAPPING_SEQ" INCREMENT BY 1 START WITH 1;
 
             CREATE TABLE t_user
             (
@@ -52,13 +50,13 @@
               car_production_year TIMESTAMP,
               author_id INTEGER NOT NULL,
               CONSTRAINT fk_author_user FOREIGN KEY (author_id) REFERENCES user_profile(userp_id),
-              CONSTRAINT check_car_type CHECK (upper(car_type) in ('SEDAN', 'TRACK', 'MINIWAN', MOTO))
+              CONSTRAINT check_car_type CHECK (upper(car_type) in ('SEDAN', 'TRACK', 'MINIWAN', 'MOTO'))
             )
 
             CREATE TABLE user_role
             (
               user_role_id INTEGER PRIMARY KEY,
-              user_role_name VARCHAR(50),
+              user_role_name VARCHAR(50)
             )
 
             CREATE TABLE user_roles_mapping
@@ -67,12 +65,103 @@
               user_role_id INTEGER NOT NULL,
               CONSTRAINT user_roles_mapping_pkey PRIMARY KEY (user_id, user_role_id),
               CONSTRAINT fk_user_user_id FOREIGN KEY (user_id) REFERENCES t_user(user_id),
-              CONSTRAINT fk_user_user_id FOREIGN KEY (user_role_id) REFERENCES user_role(user_role_id),
+              CONSTRAINT fk_user_role_id FOREIGN KEY (user_role_id) REFERENCES user_role(user_role_id),
               CONSTRAINT T_USER_ROLE_UC UNIQUE (user_role_id)
             )
+
+            CREATE UNIQUE INDEX USER_UNIQUE_LOGIN ON CAR_ADVERT (CAR_MODEL ASC);
 
             ]]>
         </sql>
     </changeSet>
-    
+
+    <changeSet id="001_schema_oracle" author="st_sanya@i.ua" dbms="oracle, h2">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="T_USER"/>
+            </not>
+        </preConditions>
+
+        <sql stripComments="true">
+            CREATE SEQUENCE "T_USER_SEQ" INCREMENT BY 1 START WITH 1;
+        </sql>
+
+        <createTable tableName="T_USER" remarks="Table for user">
+            <column name="USER_ID" type="NUMBER(4)" remarks="id">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="USER_ENABLED" type="NUMBER(1)" remarks="is user active">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_LOGIN" type="VARCHAR2(50)" remarks="Login">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_PASS" type="VARCHAR2(50)" remarks="Password"/>
+        </createTable>
+
+        <addUniqueConstraint columnNames="USER_LOGIN" constraintName="T_USER_UC" tableName="T_USER"/>
+
+        <sql stripComments="true" splitStatements="true">
+            <![CDATA[
+
+            CREATE SEQUENCE "CAR_ADVERT_SEQ" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "USER_PROFILE_SEQ" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "USER_ROLE_SEQ" INCREMENT BY 1 START WITH 1;
+            CREATE SEQUENCE "USER_ROLES_MAPPING_SEQ" INCREMENT BY 1 START WITH 1;
+
+            CREATE TABLE "USER_PROFILE"
+            (
+              "USERP_ID" NUMBER PRIMARY KEY,
+              "USERP_BIRTHDAY" TIMESTAMP,
+              "USERP_EMAIL" VARCHAR2(50) NOT NULL,
+              "USERP_LANGUAGE" VARCHAR2(40),
+              "USERP_LOGIN" VARCHAR2(50) NOT NULL,
+              "USERP_NAME" VARCHAR2(50) NOT NULL,
+              "USERP_SURNAME" VARCHAR2(50),
+              "USERP_USER" NUMBER NOT NULL,
+              CONSTRAINT fk_user_pr_user FOREIGN KEY (USERP_USER) REFERENCES T_USER(USER_ID),
+              CONSTRAINT T_USER_PF_UE_UC UNIQUE (USERP_EMAIL),
+              CONSTRAINT T_USER_PF_UI_UC UNIQUE (USERP_USER),
+              CONSTRAINT T_USER_PF_UL_UC UNIQUE (USERP_LOGIN)
+            );
+
+            CREATE TABLE "CAR_ADVERT"
+            (
+              "CAR_ADVERT_ID" NUMBER PRIMARY KEY,
+              "IS_ADVERT_ACTIVE" NUMBER(1) NOT NULL,
+              "ADVERT_PUBLISH_DATE" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              "ADVERT_TEXT" VARCHAR2(400) NOT NULL,
+              "ADVERT_TYPE" VARCHAR2(50) NOT NULL,
+              "CAR_MODEL" VARCHAR2(50),
+              "CAR_TYPE" VARCHAR2(50),
+              "CAR_ENGINE_VOLUME" NUMBER,
+              "CAR_PRODUCTION_YEAR" TIMESTAMP,
+              "AUTHOR_ID" NUMBER NOT NULL,
+              CONSTRAINT fk_author_user FOREIGN KEY (AUTHOR_ID) REFERENCES USER_PROFILE(USERP_ID),
+              CONSTRAINT check_car_type CHECK (CAR_TYPE in ('SEDAN', 'TRACK', 'MINIWAN', 'MOTO'))
+            );
+
+            CREATE TABLE "USER_ROLE"
+            (
+              "USER_ROLE_ID" NUMBER PRIMARY KEY,
+              "USER_ROLE_NAME" VARCHAR2(50)
+            );
+
+            CREATE TABLE "USER_ROLES_MAPPING"
+            (
+              "USER_ID" NUMBER NOT NULL,
+              "USER_ROLE_ID" NUMBER NOT NULL,
+              CONSTRAINT user_roles_mapping_pkey PRIMARY KEY (USER_ID, USER_ROLE_ID),
+              CONSTRAINT fk_user_user_id FOREIGN KEY (USER_ID) REFERENCES T_USER(USER_ID),
+              CONSTRAINT fk_user_role_id FOREIGN KEY (USER_ROLE_ID) REFERENCES USER_ROLE(USER_ROLE_ID),
+              CONSTRAINT T_USER_ROLES_MAPPING_UC UNIQUE (USER_ROLE_ID)
+            );
+
+            CREATE UNIQUE INDEX USER_UNIQUE_LOGIN ON CAR_ADVERT (CAR_MODEL ASC);
+
+            ]]>
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

@@ -1,0 +1,50 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+                   logicalFilePath="changelog_20.09_initial_dml_data.xml">
+
+    <changeSet id="001_dml_script" author="alex" dbms="oracle, h2" context="dml">
+        <sql stripComments="true" splitStatements="true">
+            <![CDATA[
+
+                INSERT INTO T_USER (
+                    USER_ID,
+                    USER_ENABLED,
+                    USER_LOGIN,
+                    USER_PASS)
+                VALUES (
+                   T_USER_SEQ.nextval, 1, 'testUser01@test.com',
+                   'password');
+
+                INSERT INTO USER_PROFILE (
+                    USERP_ID,
+                    USERP_BIRTHDAY,
+                    USERP_EMAIL,
+                    USERP_LANGUAGE,
+                    USERP_LOGIN,
+                    USERP_NAME,
+                    USERP_SURNAME,
+                    USERP_USER)
+                VALUES (
+                    USER_PROFILE_SEQ.nextval, TO_TIMESTAMP('1990-01-15', 'yyyy-MM-dd'), 'testUser01@test.com', 'RU', 'testUser', 'Ivan', 'Petrov',
+                    (select USER_ID from T_USER where USER_LOGIN = 'testUser01@test.com'));
+
+                INSERT INTO CAR_ADVERT (
+                    CAR_ADVERT_ID,
+                    IS_ADVERT_ACTIVE,
+                    ADVERT_PUBLISH_DATE,
+                    ADVERT_TEXT,
+                    ADVERT_TYPE,
+                    CAR_MODEL,
+                    CAR_TYPE,
+                    CAR_ENGINE_VOLUME,
+                    CAR_PRODUCTION_YEAR,
+                    AUTHOR_ID)
+                VALUES (
+                   CAR_ADVERT_SEQ.nextval, 1, TO_TIMESTAMP('2015-02-13 17:46', 'yyyy-MM-dd HH24:MI'), 'Продам автомобиль',
+                   'SELL', 'Audi', 'SEDAN', 2.0, TO_TIMESTAMP('2015', 'yyyy'),
+                   (select USERP_ID from USER_PROFILE where USERP_EMAIL = 'testUser01@test.com'));
+            ]]>
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

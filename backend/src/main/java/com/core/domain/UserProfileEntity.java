@@ -45,7 +45,7 @@ public class UserProfileEntity {
     private Languages language;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "USER_ID", nullable = false, updatable = false)
+    @JoinColumn(name = "USERP_USER", nullable = false, updatable = false)
     private UserEntity user;
 
 }
