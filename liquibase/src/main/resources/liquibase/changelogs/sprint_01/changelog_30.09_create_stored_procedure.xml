@@ -3,7 +3,7 @@
                    logicalFilePath="changelog_30.09_create_stored_procedure.xml">
 
     <changeSet id="create_delete_old_adverts_procedure" author="alex" dbms="oracle">
-        <sql stripComments="true" splitStatements="true">
+        <createProcedure>
             <![CDATA[
 
             CREATE OR REPLACE PROCEDURE deactivate_old_adverts(
@@ -13,13 +13,13 @@
             BEGIN
                    UPDATE CAR_ADVERT
                    SET IS_ADVERT_ACTIVE = 0
-                   WHERE ADVERT_PUBLISH_DATE < limitDate;
+                   WHERE TRUNC(ADVERT_PUBLISH_DATE) < TRUNC(limitDate);
 
                    result := sql%rowcount;
             END;
 
             ]]>
-        </sql>
+        </createProcedure>
     </changeSet>
     
 </databaseChangeLog>
