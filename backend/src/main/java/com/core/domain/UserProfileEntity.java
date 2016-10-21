@@ -4,6 +4,7 @@ import com.core.domain.enums.Languages;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,6 +32,7 @@ public class UserProfileEntity {
     private String surname;
 
     @Column(name = "USERP_EMAIL", unique=true, nullable = false)
+    @Email
     private String email;
 
     @Column(name = "USERP_LOGIN", unique=true, nullable = false)

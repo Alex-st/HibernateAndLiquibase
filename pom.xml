@@ -20,30 +20,17 @@
         <junit.version>4.11</junit.version>
         <lombok.version>1.14.8</lombok.version>
 
-        <spring-security-oauth2.version>2.0.7.RELEASE</spring-security-oauth2.version>
-        <spring-security.version>4.0.2.RELEASE</spring-security.version>
-        <start-class>com.dhl.ewf.cas.Application</start-class>
-        <spring-context-support.version>4.1.6.RELEASE</spring-context-support.version>
-        <quartz.version>2.2.1</quartz.version>
-        <json-path-assert.version>0.9.1</json-path-assert.version>
-
-        <httpclient.version>4.5.1</httpclient.version>
-
-        <apacheds-server-jndi.version>2.0.0-M20</apacheds-server-jndi.version>
         <jdbc.version>11.2.0.4.0</jdbc.version>
         <liquibase-core.version>3.4.1</liquibase-core.version>
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
 
 </project>
